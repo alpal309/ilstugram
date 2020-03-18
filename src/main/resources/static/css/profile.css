@@ -1,0 +1,127 @@
+#profile{
+    padding: 2rem 1rem 1rem 1rem;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+#profilemain{
+    display: flex;
+    height: 60%;
+    margin-bottom: 1rem;
+}
+
+.userimg{
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.userimg img{
+    width: 150%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.profileright{
+    display: flex;
+    padding-left: 2rem;
+    width: 65%;
+    justify-content: space-around;
+    flex-flow: column;
+}
+
+#profiledesc{
+    width: 100%;
+    height: 40%;
+    padding: 10px;
+}
+
+#userstats{
+    padding: 10px 1rem;
+    border-top: 1px solid #ccc;
+}
+
+#userstatsinner{
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.stat{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    justify-content: center;
+}
+
+.stat p{
+    font-weight: bold;
+}
+
+#grid{
+
+}
+
+#gridinner{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(135px, 1fr));
+    grid-gap: 1%;
+}
+
+.actionbutton{
+    border-radius: 8px;
+    border: 1px solid #cccccc;
+    padding: .5rem;
+    height: 35px;
+    width: max-content;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.actionbutton:hover{
+    box-shadow: 0 2px 7px -3px #5a5a5a;
+}
+
+.following, .upload{
+    border-color: #78cfba;
+    color: #78cfba;
+}
+
+.uploadlabel{
+    display: block;
+    padding: .5rem;
+    cursor: pointer;
+}
+
+.upload{
+    padding: 0;
+}
+
+#gridinner div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: .3s ease;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+#gridinner img{
+    width: 150%;
+}
+
+.userh2{
+    font-weight: 100;
+    letter-spacing: .1rem;
+}
+
+#tnoverlay{
+
+}
