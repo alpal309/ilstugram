@@ -1,6 +1,5 @@
 package com.ilstugram.controller;
 
-import com.google.gson.Gson;
 import com.ilstugram.model.User;
 import com.ilstugram.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

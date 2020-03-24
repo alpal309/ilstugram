@@ -21,8 +21,12 @@
     background-position: center;
 }
 
-.userimg img{
-    width: 150%;
+#tnoverlay{
+    opacity: 0;
+}
+
+.userimg:hover #tnoverlay{
+    opacity: 1;
 }
 
 .emptytn{
