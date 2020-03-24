@@ -17,14 +17,16 @@
     border-radius: 100%;
     position: relative;
     overflow: hidden;
+    background-size: contain;
+    background-position: center;
 }
 
 .userimg img{
     width: 150%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+}
+
+.emptytn{
+    font-size: 5rem;
 }
 
 .profileright{
@@ -62,10 +64,6 @@
 
 .stat p{
     font-weight: bold;
-}
-
-#grid{
-
 }
 
 #gridinner{
@@ -120,8 +118,4 @@
 .userh2{
     font-weight: 100;
     letter-spacing: .1rem;
-}
-
-#tnoverlay{
-
 }

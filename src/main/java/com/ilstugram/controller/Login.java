@@ -33,7 +33,7 @@ public class Login {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
         String jsonUser = UtilFunc.gson().toJson(user);
-        UtilFunc.setSession(request, jsonUser);
+        UtilFunc.setSession(request, user);
 
         response.setHeader("Location", "/profile.html");
         return new ResponseEntity<>(jsonUser, HttpStatus.ACCEPTED);
@@ -53,7 +53,7 @@ public class Login {
             validPW = passwordEncoder.matches(password, user.getPassword());
             if(!UtilFunc.isEmpty(user) && validPW){
                 String jsonUser = UtilFunc.gson().toJson(user);
-                UtilFunc.setSession(request, jsonUser);
+                UtilFunc.setSession(request, user);
                 response.setHeader("Location", "/feed.html");
                 return new ResponseEntity<>(jsonUser, HttpStatus.ACCEPTED);
             }
@@ -64,8 +64,4 @@ public class Login {
         return new ResponseEntity <>("Username or password does not match.", HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(value = "/getSession")
-    public String getSession(HttpServletRequest request){
-        return UtilFunc.getSessionUser(request);
-    }
 }

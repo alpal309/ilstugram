@@ -2,6 +2,7 @@ package com.ilstugram.utility;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ilstugram.model.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +25,7 @@ public class UtilFunc {
         return object == null;
     }
 
-    public static void setSession(HttpServletRequest req, String user) {
+    public static void setSession(HttpServletRequest req, User user) {
         try {
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
@@ -33,8 +34,8 @@ public class UtilFunc {
         }
     }
 
-    public static String getSessionUser(HttpServletRequest req) {
-        return (String) req.getSession().getAttribute("user");
+    public static User getSessionUser(HttpServletRequest req) {
+        return (User) req.getSession().getAttribute("user");
     }
 
     public static void paramMap(HttpServletRequest req){
