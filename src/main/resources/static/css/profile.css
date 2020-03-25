@@ -17,14 +17,8 @@
     border-radius: 100%;
     position: relative;
     overflow: hidden;
-}
-
-.userimg img{
-    width: 150%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    background-size: contain;
+    background-position: center;
 }
 
 .profileright{
@@ -122,6 +116,14 @@
     letter-spacing: .1rem;
 }
 
-#tnoverlay{
+.emptytn{
+    font-size: 5rem;
+}
 
+#tnoverlay{
+    opacity: 0;
+}
+
+.userimg:hover #tnoverlay{
+    opacity: 1;
 }
