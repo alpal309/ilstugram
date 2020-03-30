@@ -1,5 +1,5 @@
 (function() {
-    window.sessionStorage.clear();
+    fetch("/logout").then(r => r.json()).then(r => console.log(r));
 
     let register = $("#register");
 

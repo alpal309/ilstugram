@@ -7,8 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.Enumeration;
 
 public class UtilFunc {
@@ -25,17 +27,26 @@ public class UtilFunc {
         return object == null;
     }
 
-    public static void setSession(HttpServletRequest req, User user) {
-        try {
-            HttpSession session = req.getSession();
-            session.setAttribute("user", user);
-        } catch (NullPointerException e) {
-            System.out.println(e);
-        }
+    public static Cookie setSession(HttpServletRequest req, User user) {
+        HttpSession session = req.getSession();
+        session.setAttribute("user", user);
+        System.out.println("logging in: " + req.getSession().getAttribute("user"));
+        Cookie c = new Cookie("username", user.getUsername());
+        c.setHttpOnly(true);
+        c.setMaxAge(-1);
+        return c;
+    }
+
+    public static void invalidateSession(HttpServletRequest req){
+        System.out.println("logging out: " + req.getSession().getAttribute("user"));
+        req.getSession().invalidate();
+        Arrays.stream(req.getCookies()).filter(cookie -> cookie.getName().equals("username")).forEach(cookie -> cookie.setMaxAge(0));
     }
 
     public static User getSessionUser(HttpServletRequest req) {
-        return (User) req.getSession().getAttribute("user");
+        User user = (User) req.getSession().getAttribute("user");
+        Cookie[] usernameCookie = Arrays.stream(req.getCookies()).filter(cookie -> cookie.getName().equals("username") && cookie.getValue().equals(user.getUsername())).toArray(Cookie[]::new);
+        return (usernameCookie.length != 0 ? user : null);
     }
 
     public static void paramMap(HttpServletRequest req){
