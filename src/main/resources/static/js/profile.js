@@ -6,14 +6,12 @@
                ? document.cookie.split("username=")[1]
                : "!!null");
 
-    console.log(user);
     fetch("/profile/"+user)
         .then(response => Promise.all([response.ok, response.ok ? response.json() : response.text(), response.headers]))
         .then(([ok, body, headers]) => {
             if(ok){
-                console.log(body);
                     getThumbnail();
-                    /*                //for first and last name
+                    /*
                                     //description
                                     $("#profiledesc p");
                                     $("#numfollowers");
@@ -29,12 +27,12 @@
                         $(".actionbutton.settings").style.display = "inline-block";
                 } else {
                         $(".actionbutton.follow").style.display = "inline-block";
-                        document.getElementById("tnoverlay").remove()
+                        $("#tnoverlay").remove()
                         /*$(".actionbutton.following").style.display = "inline-block";*/
                     }
             }
             else{
-                let mw = document.querySelector("#mainwrapper");
+                let mw = $("#mainwrapper");
                 while(mw.lastChild){
                     mw.removeChild(mw.lastChild);
                 }
@@ -56,7 +54,6 @@
         })
         .catch(error => console.log(error));
 };
-
     createHeader();
     $("#thumbnail").addEventListener("change", function(){
         let formdata = new FormData();
