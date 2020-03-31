@@ -9,10 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,10 +48,10 @@ public class ThumbnailController {
                 .body(new ByteArrayResource(tn.getData()));
     }
 
-    @GetMapping(value = "/getThumbnail")
-    public ResponseEntity<?> getThumbnail(HttpServletRequest request){
+    @GetMapping(value = "/getThumbnail/{user}")
+    public ResponseEntity<?> getThumbnail(@PathVariable String user){
         try{
-            Thumbnail tn = tnrepo.findThumbnailByUsernameAndEnabled(UtilFunc.getSessionUser(request).getUsername(), 1);
+            Thumbnail tn = tnrepo.findThumbnailByUsernameAndEnabled(user, 1);
 
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(tn.getFileType()))

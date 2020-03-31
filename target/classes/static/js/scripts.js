@@ -12,7 +12,7 @@
             data: formData,
             complete: function(response, location, status){
                 if(Math.floor(status/100) < 4) {
-                    window.sessionStorage.setItem("user", JSON.stringify(response));
+                    //window.sessionStorage.setItem("user", JSON.stringify(response));
                     window.location = location;
                 }
                 else
@@ -33,7 +33,7 @@
             data: formData,
             complete: function(response, location, status) {
                 if (Math.floor(status / 100) < 4){
-                    window.sessionStorage.setItem("user", JSON.stringify(response));
+                    //window.sessionStorage.setItem("user", JSON.stringify(response));
                     window.location = location;
                 }
                 else {

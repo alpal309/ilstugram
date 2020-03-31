@@ -83,7 +83,7 @@
     height: 35px;
     width: max-content;
     cursor: pointer;
-    display: inline-block;
+    display: none;
 }
 
 .actionbutton:hover{
