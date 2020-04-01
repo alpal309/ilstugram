@@ -7,8 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.Enumeration;
 
 public class UtilFunc {
@@ -25,17 +27,36 @@ public class UtilFunc {
         return object == null;
     }
 
-    public static void setSession(HttpServletRequest req, User user) {
-        try {
-            HttpSession session = req.getSession();
-            session.setAttribute("user", user);
-        } catch (NullPointerException e) {
-            System.out.println(e);
-        }
+    public static Cookie setSession(HttpServletRequest req, User user) {
+        HttpSession session = req.getSession();
+        session.setAttribute("user", user);
+        Cookie c = new Cookie("username", user.getUsername());
+        //c.setHttpOnly(true);
+        c.setMaxAge(-1);
+        return c;
+    }
+
+    public static void invalidateSession(HttpServletRequest request){
+        System.out.println("logging out: " + request.getSession().getAttribute("user"));
+        request.getSession().invalidate();
+        Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("username")).forEach(cookie -> {cookie.setMaxAge(0); cookie.setValue("");});
     }
 
     public static User getSessionUser(HttpServletRequest req) {
-        return (User) req.getSession().getAttribute("user");
+        try {
+            return (User) req.getSession().getAttribute("user");
+        }catch(NullPointerException npe){
+            return null;
+        }
+    }
+
+    public static boolean sessionEqualsCookie(HttpServletRequest request){
+        try{
+            Cookie usernameCookie = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("username")).toArray(Cookie[]::new)[0];
+            return usernameCookie.getValue().equals(UtilFunc.getSessionUser(request).getUsername());
+        }catch(NullPointerException npe){
+            return false;
+        }
     }
 
     public static void paramMap(HttpServletRequest req){

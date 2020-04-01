@@ -1,6 +1,5 @@
 package com.ilstugram.controller;
 
-import com.google.gson.Gson;
 import com.ilstugram.model.User;
 import com.ilstugram.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +32,7 @@ public class Login {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
         String jsonUser = UtilFunc.gson().toJson(user);
-        UtilFunc.setSession(request, user);
-
+        response.addCookie(UtilFunc.setSession(request, user));
         response.setHeader("Location", "/profile.html");
         return new ResponseEntity<>(jsonUser, HttpStatus.ACCEPTED);
     }
@@ -53,8 +51,9 @@ public class Login {
             validPW = passwordEncoder.matches(password, user.getPassword());
             if(!UtilFunc.isEmpty(user) && validPW){
                 String jsonUser = UtilFunc.gson().toJson(user);
-                UtilFunc.setSession(request, user);
+                response.addCookie(UtilFunc.setSession(request, user));
                 response.setHeader("Location", "/feed.html");
+                System.out.println("loggin in: " + user.toString());
                 return new ResponseEntity<>(jsonUser, HttpStatus.ACCEPTED);
             }
         }catch(Exception e){
@@ -63,5 +62,13 @@ public class Login {
 
         return new ResponseEntity <>("Username or password does not match.", HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping(value = "/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request){
+        UtilFunc.invalidateSession(request);
+        return new ResponseEntity<>("logged out", HttpStatus.OK);
+    }
+
+
 
 }
