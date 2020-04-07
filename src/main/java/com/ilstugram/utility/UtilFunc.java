@@ -9,12 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.constraints.Null;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.Objects;
 
 public class UtilFunc {
 
@@ -63,6 +60,10 @@ public class UtilFunc {
         }
     }
 
+    public static boolean isUser(HttpServletRequest request, String username){
+        return UtilFunc.sessionEqualsCookie(request) && UtilFunc.getSessionUser(request).getUsername().equals(username);
+    }
+
     public static void paramMap(HttpServletRequest req){
         Enumeration<String> params = req.getParameterNames();
         Enumeration<String> headerNames = req.getHeaderNames();
@@ -78,7 +79,10 @@ public class UtilFunc {
     }
 
     public static Gson gson(){
-        GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
+        GsonBuilder builder = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .setPrettyPrinting()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss");
         return builder.create();
     }
 
