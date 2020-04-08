@@ -21,6 +21,18 @@
     background-position: center;
 }
 
+#tnoverlay{
+    opacity: 0;
+}
+
+.userimg:hover #tnoverlay{
+    opacity: 1;
+}
+
+.emptytn{
+    font-size: 5rem;
+}
+
 .profileright{
     display: flex;
     padding-left: 2rem;
@@ -58,14 +70,10 @@
     font-weight: bold;
 }
 
-#grid{
-
-}
-
 #gridinner{
     display: grid;
-    grid-template-columns: repeat(3, minmax(135px, 1fr));
-    grid-gap: 1%;
+    grid-template-columns: repeat(3, minmax(115px, 1fr));
+    grid-gap: 10px;
 }
 
 .actionbutton{
@@ -97,7 +105,7 @@
     padding: 0;
 }
 
-#gridinner div{
+.grid-item{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -105,10 +113,10 @@
     transition: .3s ease;
     cursor: pointer;
     border-radius: 8px;
-}
-
-#gridinner img{
-    width: 150%;
+    position: relative;
+    max-height: 366px;
+    min-height: 125px;
+    height: 100%;
 }
 
 .userh2{
@@ -116,14 +124,15 @@
     letter-spacing: .1rem;
 }
 
-.emptytn{
-    font-size: 5rem;
+.no-img{
+    text-align: center;
+    font-weight: bold;
+    position: relative;
+    top: 2rem;
 }
 
-#tnoverlay{
-    opacity: 0;
-}
-
-.userimg:hover #tnoverlay{
-    opacity: 1;
+.img-bg{
+    height: 100%;
+    width: 100%;
+    background-size: cover;
 }
