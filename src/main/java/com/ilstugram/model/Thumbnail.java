@@ -15,10 +15,11 @@ public class Thumbnail {
 
     private String username;
 
-    @Column(name="file_name")
+    @Column(name = "file_name")
     private String fileName;
 
-    @Column(name="file_type")
+    @Column(name = "file_type")
+
     private String fileType;
 
     @Lob
@@ -29,9 +30,21 @@ public class Thumbnail {
     public Thumbnail(String username, String fileName, String fileType, byte[] data){
         this.username = username;
         this.fileName = fileName;
-        this. fileType = fileType;
+        this.fileType = fileType;
         this.data = data;
         this.enabled = 1;
+    }
+
+    @Override
+    public String toString() {
+        return "Thumbnail{" +
+                "id=" + id +
+                ", enabled=" + enabled +
+                ", username='" + username + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", fileType='" + fileType + '\'' +
+                ", data=" + Arrays.toString(data) +
+                '}';
     }
 
     public int getId() {
@@ -82,15 +95,4 @@ public class Thumbnail {
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "Thumbnail{" +
-                "id=" + id +
-                ", enabled=" + enabled +
-                ", username='" + username + '\'' +
-                ", fileName='" + fileName + '\'' +
-                ", fileType='" + fileType + '\'' +
-                ", data=" + Arrays.toString(data) +
-                '}';
-    }
 }

@@ -25,17 +25,18 @@ public class Routing {
     }
 
     @GetMapping(value = "/profile/{username}")
-    public ResponseEntity<?> profile(HttpServletRequest request, HttpServletResponse response, @PathVariable String username) throws NullPointerException {
+    public ResponseEntity<?> profile(HttpServletRequest request, HttpServletResponse response, @PathVariable String username){
         User user = null;
         response.setHeader("isUser", "false");
 
-        if(UtilFunc.sessionEqualsCookie(request) && UtilFunc.getSessionUser(request).getUsername().equals(username))
+        if(UtilFunc.sessionEqualsCookie(request) && UtilFunc.getSessionUser(request).getUsername().equals(username)){
             response.setHeader("isUser", "true");
+        }
 
         try{
-             user = ur.findUserByUsernameAndEnabled(username, 1);
-             if(UtilFunc.isEmpty(user))
-                 throw new NullPointerException();
+            user = ur.findUserByUsernameAndEnabled(username, 1);
+            if(UtilFunc.isEmpty(user))
+                throw new NullPointerException();
         }catch(NullPointerException npe){
             return new ResponseEntity<>("No user found!", HttpStatus.NOT_FOUND);
         }

@@ -18,4 +18,5 @@ public interface ThumbnailRepo extends CrudRepository<Thumbnail, String> {
     @Query("UPDATE Thumbnail tn SET tn.enabled = ?1 WHERE tn.username = ?2 AND tn.enabled = 1")
     @Transactional(timeout = 5)
     int setEnabledForUsername(int enabled, String username);
+
 }

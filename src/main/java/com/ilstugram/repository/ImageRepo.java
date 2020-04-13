@@ -12,3 +12,4 @@ public interface ImageRepo extends CrudRepository<Image, String> {
     ArrayList<Image> findImageByUsernameAndEnabled(String username, int enabled);
 
 }
+

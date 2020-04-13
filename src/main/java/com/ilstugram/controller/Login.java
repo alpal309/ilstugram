@@ -53,6 +53,7 @@ public class Login {
                 String jsonUser = UtilFunc.gson().toJson(user);
                 response.addCookie(UtilFunc.setSession(request, user));
                 response.setHeader("Location", "/feed.html");
+                System.out.println("loggin in: " + user.toString());
                 return new ResponseEntity<>(jsonUser, HttpStatus.ACCEPTED);
             }
         }catch(Exception e){
@@ -65,7 +66,6 @@ public class Login {
     @GetMapping(value = "/logout")
     public ResponseEntity<?> logout(HttpServletRequest request){
         UtilFunc.invalidateSession(request);
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        return new ResponseEntity<>("logged out", HttpStatus.OK);
     }
-
 }

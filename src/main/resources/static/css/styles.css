@@ -31,7 +31,11 @@ a{
     padding: 2rem 0;
 }
 
+<<<<<<< HEAD
 .bgoverlay{
+=======
+.herooverlay{
+>>>>>>> master
     width: 100%;
     height: 100%;
     z-index: 2;

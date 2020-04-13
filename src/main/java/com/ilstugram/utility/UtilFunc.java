@@ -37,14 +37,14 @@ public class UtilFunc {
         return c;
     }
 
-    public static void invalidateSession(HttpServletRequest req){
-        System.out.println("logging out: " + req.getSession().getAttribute("user"));
-        req.getSession().invalidate();
-        Arrays.stream(req.getCookies()).filter(cookie -> cookie.getName().equals("username")).forEach(cookie -> {cookie.setMaxAge(0); cookie.setValue("");});
+    public static void invalidateSession(HttpServletRequest request){
+        System.out.println("logging out: " + request.getSession().getAttribute("user"));
+        request.getSession().invalidate();
+        Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("username")).forEach(cookie -> {cookie.setMaxAge(0); cookie.setValue("");});
     }
 
     public static User getSessionUser(HttpServletRequest req) {
-        try{
+        try {
             return (User) req.getSession().getAttribute("user");
         }catch(NullPointerException npe){
             return null;
@@ -52,16 +52,12 @@ public class UtilFunc {
     }
 
     public static boolean sessionEqualsCookie(HttpServletRequest request){
-        try {
+        try{
             Cookie usernameCookie = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("username")).toArray(Cookie[]::new)[0];
             return usernameCookie.getValue().equals(UtilFunc.getSessionUser(request).getUsername());
         }catch(NullPointerException npe){
             return false;
         }
-    }
-
-    public static boolean isUser(HttpServletRequest request, String username){
-        return UtilFunc.sessionEqualsCookie(request) && UtilFunc.getSessionUser(request).getUsername().equals(username);
     }
 
     public static void paramMap(HttpServletRequest req){
