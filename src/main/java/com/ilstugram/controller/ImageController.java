@@ -1,7 +1,9 @@
 package com.ilstugram.controller;
 
 import com.google.gson.reflect.TypeToken;
+import com.ilstugram.model.Comment;
 import com.ilstugram.model.Image;
+import com.ilstugram.repository.CommentRepo;
 import com.ilstugram.repository.ImageRepo;
 import com.ilstugram.utility.UtilFunc;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class ImageController {
 
     @Autowired
     ImageRepo ir;
+
+    @Autowired
+    CommentRepo cr;
 
     private final String uploadPath = "c:/ilstugramuploads/";
 
@@ -66,6 +71,13 @@ public class ImageController {
         }catch(IOException io){
             return new ResponseEntity<>(io.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping(value = "/postComment")
+    public ResponseEntity<?> postComment(HttpServletRequest request, @RequestParam String description, @RequestParam String id){
+        String username = UtilFunc.getSessionUser(request).getUsername();
+        Comment comment = new Comment(id, username, description, new Date());
+        return ResponseEntity.ok(UtilFunc.gson().toJson(cr.save(comment)));
     }
 
 }

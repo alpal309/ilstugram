@@ -30,7 +30,6 @@ public class UtilFunc {
     public static Cookie setSession(HttpServletRequest req, User user) {
         HttpSession session = req.getSession();
         session.setAttribute("user", user);
-        System.out.println("logging in: " + req.getSession().getAttribute("user"));
         Cookie c = new Cookie("username", user.getUsername());
         //c.setHttpOnly(true);
         c.setMaxAge(-1);

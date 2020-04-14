@@ -3,6 +3,7 @@ package com.ilstugram.model;
 import com.google.gson.annotations.Expose;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -40,6 +41,12 @@ public class Image {
     @Expose
     private String downloadPath;
 
+    @Expose
+    @OneToMany(mappedBy = "image")
+    List<Comment> comments;
+
+    @Expose
+    private String description;
 
     public Image(){}
 
@@ -51,6 +58,11 @@ public class Image {
         this.downloadPath = "/uploads/"+username+"/"+fileName;
         this.uploadDate = new Date();
         this.enabled = 1;
+    }
+
+    public Image(String username, String fileName, String fileType, String filePath, String description){
+        this(username, fileName, fileType, filePath);
+        this.description = description;
     }
 
     public int getId() {
@@ -117,6 +129,14 @@ public class Image {
         this.downloadPath = downloadPath;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "Thumbnail{" +
@@ -127,6 +147,7 @@ public class Image {
                 ", fileType='" + fileType + '\'' +
                 ", filePath='" + filePath + '\'' +
                 ", downloadPath='" + downloadPath + '\'' +
+                ", description='" + description + '\'' +
                 ", uploadDate='" + uploadDate + "'}";
     }
 }

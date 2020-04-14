@@ -2,7 +2,6 @@
 
     fetch("/logout").then(r => r.text()).then(r => console.log(r));
 
-
     let register = $("#register");
 
     register.addEventListener("submit", function (event) {
