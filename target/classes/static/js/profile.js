@@ -1,4 +1,6 @@
 (function(){
+    let imageObjects = [];
+
     const user = (
         window.location.search && window.location.search.split("?username=")[1] !== ""
             ? window.location.search.split("?username=")[1]
@@ -42,16 +44,21 @@
             }
         });
 
-    fetch("/retrieveImages/"+user)
-        .then(response => Promise.all([response.ok, response.ok ? response.json() : response.text(), response.headers]))
-        .then(([ok, body, headers]) => {
-            if(ok) {
-                displayImages(body);
-            }
-            else{
-                $("#grid").innerHTML += `<p class='no-img'>${body}</p>`;
-            }
-        });
+    const getImages = () => {
+        fetch("/retrieveImages/" + user)
+            .then(response => Promise.all([response.ok, response.ok ? response.json() : response.text(), response.headers]))
+            .then(([ok, body, headers]) => {
+                if (ok) {
+                    imageObjects = body;
+                    displayImages(body);
+                    console.log(imageObjects);
+                } else {
+                    $("#grid").innerHTML += `<p class='no-img'>${body}</p>`;
+                }
+            });
+    };
+
+    getImages();
 
     const getThumbnail = () => {
         fetch("/getThumbnail/" + user).then(response => response.blob()).then(blob => {
@@ -73,7 +80,8 @@
 
         fetch("/uploadThumbnail", {method: "POST", body: formdata}).then(response => response.blob()).then(blob =>{
             $(".userimg").style.backgroundImage = `url('${URL.createObjectURL(blob)}')`;
-            $(".emptytn").remove();
+            if(!!document.querySelector(".emptytn"))
+                $(".emptytn").remove();
         }).catch(error => {
             console.log(error);
         });
@@ -99,27 +107,32 @@
     });
 
     const displayImages = (imageArray) => {
-
-        const create = (image) => {
+        while($("#gridinner").lastChild){
+            $("#gridinner").removeChild($("#gridinner").lastChild);
+        }
+        const create = (image, index) => {
             let source = `${window.location.origin}${image.downloadPath}`;
-            console.log(image);
             const div = document.createElement("div");
             div.classList.add("grid-item");
             const innerdiv = document.createElement("div");
             innerdiv.classList.add("img-bg");
+            innerdiv.classList.add("user-image");
             innerdiv.style.backgroundImage = `url(${source})`;
             div.appendChild(innerdiv);
             $("#gridinner").prepend(div);
+
+            addModalListener(innerdiv, imageObjects[index], getImages);
         };
 
-        if(imageArray.length >= 1)
-            imageArray.forEach((image) => {
-                create(image);
+        if (imageArray.length >= 1)
+            imageArray.forEach((image, index) => {
+                create(image, index);
             });
         else
-            create(imageArray);
+            create(imageArray, 0);
 
-        $("#numposts p").innerHTML = $("#gridinner").childElementCount;
+        $("#numposts").innerHTML = $("#gridinner").childElementCount;
+
     };
 
 })();

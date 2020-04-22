@@ -104,6 +104,8 @@ const createHeader = () => {
 			div.classList.add("headerinnermid");
 			let search = document.createElement("input");
 			search.placeholder = "Search";
+			search.type = "text";
+			search.className = "input-border";
 			div.appendChild(search);
 		}else if(i === 2){
 			div.classList.add("headerinnerright");
@@ -126,4 +128,152 @@ const createHeader = () => {
 		parent.appendChild(inner);
 	}
 
+};
+
+const createModal = (imgobj, updateImagesFunction) => {
+	//creating containers and exit button
+	const modal = document.createElement("div");
+	modal.classList.add("modal");
+	const inner = document.createElement("div");
+	inner.classList.add("modalinner");
+	const exit = document.createElement("i");
+	exit.className = "fas fa-times exit";
+	exit.addEventListener("click", () => {
+		modal.style.display = "none";
+		while(inner.lastChild){
+			inner.removeChild(inner.lastChild);
+		}
+		document.body.style.overflow = "auto";
+		document.body.removeChild(modal);
+	});
+
+	//creating the actual image
+	const img = document.createElement("img");
+	img.alt = "user uploaded image";
+	img.src = `${window.location.origin}${imgobj.downloadPath}`;
+	img.classList.add("modalimage");
+	inner.appendChild(img);
+
+	//creating the container that holds all the image details/comments
+	let commentsection = document.createElement("div");
+	commentsection.classList.add("commentcontainer");
+
+	//creates the detail section about the image
+	let details = document.createElement("div");
+	details.className = "imagedetails marg-bottom";
+	let actionicons = document.createElement("div");
+	actionicons.className = "actionicons";
+
+	//creates the image description section
+	let userdetails = document.createElement("div");
+	userdetails.className = "userdetails";
+	let username = document.createElement("span");
+	username.innerHTML = imgobj.username;
+	username.className = "modalusername i-right";
+	let description = document.createElement("span");
+	description.innerHTML = imgobj.description ? imgobj.description : "description goes here";
+	userdetails.appendChild(username);
+	userdetails.appendChild(description);
+	let date = document.createElement("p");
+	date.className = "modaldate";
+	date.innerHTML = new Date(imgobj.uploadDate).toLocaleDateString();
+	userdetails.appendChild(date);
+
+	//creates the likes section
+	let heart = document.createElement("i");
+	heart.className = "far fa-heart i-click i-right";
+	let likes = document.createElement("span");
+	likes.innerHTML = "0";
+	likes.innerHTML += " likes";
+
+	//throwing all these elements onto the DOM
+	actionicons.appendChild(heart);
+	actionicons.appendChild(likes);
+	details.appendChild(actionicons);
+	details.appendChild(userdetails);
+	commentsection.appendChild(details);
+
+	//creates the comment box section
+	let inputdiv = document.createElement("div");
+	inputdiv.className = "commentdiv marg-bottom";
+	let input = document.createElement("input");
+	input.type = "text";
+	input.placeholder = "Leave a comment!";
+	input.name = "description";
+	input.className = "input-border commentinput";
+	inputdiv.appendChild(input);
+
+	//the little send button
+	let send = document.createElement("i");
+	send.className = "far fa-paper-plane marg-left i-click";
+	send.addEventListener("click", () => {
+		let val = $(".commentinput").value;
+		let id = imgobj.id;
+		if(val !== "")
+			comment(val, id, updateImagesFunction);
+		else
+			alert("Please write a comment.");
+	});
+	inputdiv.appendChild(send);
+
+	//again, appending all these created nodes onto the DOM
+	commentsection.appendChild(inputdiv);
+
+	//creating the logic for the comments
+	let commentsect = document.createElement("div");
+	commentsect.className = "commentsection";
+
+	imgobj.comments.forEach(comment => {
+		let c = renderComment(comment);
+		commentsect.prepend(c);
+	});
+	commentsection.appendChild(commentsect);
+	inner.appendChild(commentsection);
+	modal.appendChild(exit);
+	modal.appendChild(inner);
+	document.body.appendChild(modal);
+
+	//finally revealing the modal to the user while preventing scroll of the background
+	modal.style.display = "block";
+	document.body.style.overflow = "hidden";
+
+};
+
+const addModalListener = (el, imgobj, updateImagesFunction) => {
+	if(!el.getAttribute("data-clickable"))
+		el.addEventListener("click", (e) => {
+			e.currentTarget.setAttribute("data-clickable", "true");
+			createModal(imgobj, updateImagesFunction);
+		});
+};
+
+const comment = (desc, id, updateImagesFunction) => {
+	let form = new FormData();
+	form.append("description", desc);
+	form.append("id", id);
+
+	fetch("/postComment", {method: "POST", body: form})
+		.then(r => r.json())
+		.then(data => {
+			$(".commentsection").prepend(renderComment(data));
+			updateImagesFunction();
+		});
+
+};
+
+const renderComment = (comment) => {
+	let c = document.createElement("div");
+	c.className = "comment";
+	let u = document.createElement("span");
+	u.innerHTML = comment.username + " wrote:";
+	u.className = "modalusername i-right";
+	let span = document.createElement("p");
+	span.innerHTML = comment.description;
+	let cd = document.createElement("p");
+	cd.className = "modaldate";
+	cd.innerHTML = new Date(comment.date).toLocaleDateString();
+	c.appendChild(u);
+	c.appendChild(span);
+	c.appendChild(cd);
+	return c;
 };

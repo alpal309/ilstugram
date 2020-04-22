@@ -1,12 +1,15 @@
 package com.ilstugram.controller;
 
 import com.google.gson.reflect.TypeToken;
+import com.ilstugram.model.Comment;
 import com.ilstugram.model.Image;
+import com.ilstugram.repository.CommentRepo;
 import com.ilstugram.repository.ImageRepo;
 import com.ilstugram.utility.UtilFunc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,11 +24,15 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Date;
 
+
 @RestController
 public class ImageController {
 
     @Autowired
     ImageRepo ir;
+
+    @Autowired
+    CommentRepo cr;
 
     private final String uploadPath = "c:/ilstugramuploads/";
 
@@ -43,10 +50,6 @@ public class ImageController {
             return new ResponseEntity<>(npe.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-
-
-
-
 
     @PostMapping(value = "/uploadImage")
     public ResponseEntity<?> uploadImage(HttpServletRequest request, @RequestParam MultipartFile file){
@@ -68,6 +71,13 @@ public class ImageController {
         }catch(IOException io){
             return new ResponseEntity<>(io.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping(value = "/postComment")
+    public ResponseEntity<?> postComment(HttpServletRequest request, @RequestParam String description, @RequestParam String id){
+        String username = UtilFunc.getSessionUser(request).getUsername();
+        Comment comment = new Comment(id, username, description, new Date());
+        return ResponseEntity.ok(UtilFunc.gson().toJson(cr.save(comment)));
     }
 
 }
