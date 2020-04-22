@@ -45,18 +45,19 @@
         });
 
     const getImages = () => {
-       fetch("/retrieveImages/" + user)
-           .then(response => Promise.all([response.ok, response.ok ? response.json() : response.text(), response.headers]))
-           .then(([ok, body, headers]) => {
-               if (ok) {
-                   imageObjects = body;
-                   displayImages(body);
-                   console.log(imageObjects);
-               } else {
-                   $("#grid").innerHTML += `<p class='no-img'>${body}</p>`;
-               }
-           });
-   };
+
+        fetch("/retrieveImages/" + user)
+            .then(response => Promise.all([response.ok, response.ok ? response.json() : response.text(), response.headers]))
+            .then(([ok, body, headers]) => {
+                if (ok) {
+                    imageObjects = body;
+                    displayImages(body);
+                    console.log(imageObjects);
+                } else {
+                    $("#grid").innerHTML += `<p class='no-img'>${body}</p>`;
+                }
+            });
+    };
 
     getImages();
 
@@ -124,12 +125,12 @@
             addModalListener(innerdiv, imageObjects[index], getImages);
         };
 
-            if (imageArray.length >= 1)
-                imageArray.forEach((image, index) => {
-                    create(image, index);
-                });
-            else
-                create(imageArray, 0);
+        if (imageArray.length >= 1)
+            imageArray.forEach((image, index) => {
+                create(image, index);
+            });
+        else
+            create(imageArray, 0);
 
         $("#numposts").innerHTML = $("#gridinner").childElementCount;
 

@@ -240,11 +240,12 @@ const createModal = (imgobj, updateImagesFunction) => {
 };
 
 const addModalListener = (el, imgobj, updateImagesFunction) => {
-		if(!el.getAttribute("data-clickable"))
-			el.addEventListener("click", (e) => {
-				e.currentTarget.setAttribute("data-clickable", "true");
-				createModal(imgobj, updateImagesFunction);
-			});
+
+	if(!el.getAttribute("data-clickable"))
+		el.addEventListener("click", (e) => {
+			e.currentTarget.setAttribute("data-clickable", "true");
+			createModal(imgobj, updateImagesFunction);
+		});
 };
 
 const comment = (desc, id, updateImagesFunction) => {

@@ -41,12 +41,11 @@ public class Image {
     @Expose
     private String downloadPath;
 
+    private String description;
+
     @Expose
     @OneToMany(mappedBy = "image")
     List<Comment> comments;
-
-    @Expose
-    private String description;
 
     public Image(){}
 
@@ -62,6 +61,15 @@ public class Image {
 
     public Image(String username, String fileName, String fileType, String filePath, String description){
         this(username, fileName, fileType, filePath);
+        this.description = description;
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -129,19 +137,12 @@ public class Image {
         this.downloadPath = downloadPath;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public String toString() {
         return "Thumbnail{" +
                 "id=" + id +
                 ", enabled=" + enabled +
+                ", description=" + description +
                 ", username='" + username + '\'' +
                 ", fileName='" + fileName + '\'' +
                 ", fileType='" + fileType + '\'' +
