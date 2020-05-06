@@ -35,6 +35,7 @@ public class Routing {
 
         try{
             user = ur.findUserByUsernameAndEnabled(username, 1);
+            System.out.println(user.toString());
             if(UtilFunc.isEmpty(user))
                 throw new NullPointerException();
         }catch(NullPointerException npe){

@@ -1,0 +1,10 @@
+.feed-div{
+    padding: 0 10px;
+    margin-bottom: 1rem;
+    position: relative;
+    font-size: 1.3rem;
+}
+
+.feed-img{
+    width: 100%;
+}

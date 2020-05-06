@@ -251,10 +251,12 @@ button:focus{
     flex-flow: column;
     color: #696969;
     overflow: auto;
+    background: white;
 }
 
 .modalimage{
     width: 100%;
+    max-width: 700px;
 }
 
 .exit{

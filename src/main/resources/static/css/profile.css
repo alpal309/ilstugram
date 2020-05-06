@@ -136,3 +136,9 @@
     width: 100%;
     background-size: cover;
 }
+
+@media screen and (min-width: 680px) {
+    .img-bg{
+        min-height: 300px;
+    }
+}

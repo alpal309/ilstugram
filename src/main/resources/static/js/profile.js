@@ -13,13 +13,6 @@
         .then(([ok, body, headers]) => {
             if(ok){
                 getThumbnail();
-                /*
-                                //description
-                                $("#profiledesc p");
-                                $("#numfollowers");
-                                $("#numfollowing");
-                                //to append all uploaded pictures to
-                                $("#gridinner");*/
                 $(".userh2").innerHTML = body.username;
                 $("#profiledesc h3").innerHTML = `${body.firstname} ${body.lastname.charAt(0)}.`;
 
@@ -135,5 +128,28 @@
         $("#numposts").innerHTML = $("#gridinner").childElementCount;
 
     };
+
+    const followFriend = () => {
+        let userToFollow = window.location.search.split("?username=")[1];
+        let userFollowing = document.cookie.split("username=")[1];
+        let formData = new FormData();
+        formData.append("follower", userFollowing);
+        formData.append("following", userToFollow);
+
+        if(userFollowing && userToFollow){
+            fetch("/followuser", {method: "POST", body: formData})
+                .then(r => r.json())
+                .then(data => {
+                    $(".actionbutton.follow").style.display = "none";
+                    $(".actionbutton.following").style.display = "inline-block";
+                });
+        }else{
+            alert("Please login to follow this user!");
+        }
+
+    };
+
+    $(".actionbutton.follow").addEventListener("click", followFriend);
+
 
 })();

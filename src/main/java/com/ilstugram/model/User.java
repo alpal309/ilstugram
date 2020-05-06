@@ -1,12 +1,16 @@
 package com.ilstugram.model;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Table(name = "users", schema = "ilstugram")
-public class User {
+public class User implements Serializable {
 
     @Column(name="first_name")
     @Expose
@@ -15,6 +19,7 @@ public class User {
     @Expose
     private String lastname;
     @Expose
+    @NaturalId
     private String username;
     @Expose
     private String email;
@@ -26,6 +31,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Expose(serialize = false)
     private int id;
+
+    @Expose
+    @OneToMany(mappedBy = "user")
+    private List<Following> followers;
+
     public User(){}
 
     public User(String firstname, String lastname,
@@ -94,6 +104,14 @@ public class User {
         this.id = id;
     }
 
+    public List<Following> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<Following> followers) {
+        this.followers = followers;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -103,6 +121,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", enabled=" + enabled +
+                ", following=" + Arrays.toString(followers.toArray()) +
                 ", id=" + id +
                 '}';
     }
